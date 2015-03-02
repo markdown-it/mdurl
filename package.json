@@ -1,7 +1,7 @@
 {
   "name": "mdurl",
-  "version": "0.0.0",
-  "description": "url utilities for markdown-it",
+  "version": "0.0.1",
+  "description": "URL utilities for markdown-it",
   "repository": "markdown-it/mdurl",
   "license": "MIT",
   "scripts": {
