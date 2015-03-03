@@ -8,11 +8,11 @@ var encodeCache = {};
 // Create a lookup array where anything but characters in `chars` string
 // and alphanumeric chars is percent-encoded.
 //
-function getEncodeCache(unescapedSet) {
-  var i, ch, cache = encodeCache[unescapedSet];
+function getEncodeCache(exclude) {
+  var i, ch, cache = encodeCache[exclude];
   if (cache) { return cache; }
 
-  cache = encodeCache[unescapedSet] = [];
+  cache = encodeCache[exclude] = [];
 
   for (i = 0; i < 128; i++) {
     ch = String.fromCharCode(i);
@@ -25,8 +25,8 @@ function getEncodeCache(unescapedSet) {
     }
   }
 
-  for (i = 0; i < unescapedSet.length; i++) {
-    cache[unescapedSet.charCodeAt(i)] = unescapedSet[i];
+  for (i = 0; i < exclude.length; i++) {
+    cache[exclude.charCodeAt(i)] = exclude[i];
   }
 
   return cache;
@@ -37,24 +37,24 @@ function getEncodeCache(unescapedSet) {
 // encoded sequences.
 //
 //  - string       - string to encode
-//  - unescapedSet - list of characters to ignore (in addition to a-zA-Z0-9)
+//  - exclude      - list of characters to ignore (in addition to a-zA-Z0-9)
 //  - keepEscaped  - don't encode '%' in a correct escape sequence (default: true)
 //
-function encode(string, unescapedSet, keepEscaped) {
+function encode(string, exclude, keepEscaped) {
   var i, l, code, nextCode, cache,
       result = '';
 
-  if (typeof unescapedSet !== 'string') {
+  if (typeof exclude !== 'string') {
     // encode(string, keepEscaped)
-    keepEscaped  = unescapedSet;
-    unescapedSet = encode.defaultChars;
+    keepEscaped  = exclude;
+    exclude = encode.defaultChars;
   }
 
   if (typeof keepEscaped === 'undefined') {
     keepEscaped = true;
   }
 
-  cache = getEncodeCache(unescapedSet);
+  cache = getEncodeCache(exclude);
 
   for (i = 0, l = string.length; i < l; i++) {
     code = string.charCodeAt(i);
