@@ -38,7 +38,7 @@
 //
 // 5. `url.parse()` does not have `parseQueryString` argument
 //
-// 6. Removed extraneous parameters: `host`, `path`, `query`, etc.,
+// 6. Removed extraneous result properties: `host`, `path`, `query`, etc.,
 //    which can be constructed using other parts of the url.
 //
 
