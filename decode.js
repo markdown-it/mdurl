@@ -6,19 +6,19 @@
 
 var decodeCache = {};
 
-function getDecodeCache(reservedSet) {
-  var i, ch, cache = decodeCache[reservedSet];
+function getDecodeCache(exclude) {
+  var i, ch, cache = decodeCache[exclude];
   if (cache) { return cache; }
 
-  cache = decodeCache[reservedSet] = [];
+  cache = decodeCache[exclude] = [];
 
   for (i = 0; i < 128; i++) {
     ch = String.fromCharCode(i);
     cache.push(ch);
   }
 
-  for (i = 0; i < reservedSet.length; i++) {
-    ch = reservedSet.charCodeAt(i);
+  for (i = 0; i < exclude.length; i++) {
+    ch = exclude.charCodeAt(i);
     cache[ch] = '%' + ('0' + ch.toString(16).toUpperCase()).slice(-2);
   }
 
@@ -28,14 +28,14 @@ function getDecodeCache(reservedSet) {
 
 // Decode percent-encoded string.
 //
-function decode(string, reservedSet) {
+function decode(string, exclude) {
   var cache;
 
-  if (typeof reservedSet !== 'string') {
-    reservedSet = decode.defaultChars;
+  if (typeof exclude !== 'string') {
+    exclude = decode.defaultChars;
   }
 
-  cache = getDecodeCache(reservedSet);
+  cache = getDecodeCache(exclude);
 
   return string.replace(/(%[a-f0-9]{2})+/gi, function(seq) {
     var i, l, b1, b2, b3, b4, char,
