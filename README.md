@@ -79,7 +79,7 @@ Result (hash):
 Difference with node's `url`:
 
 1. No leading slash in paths, e.g. in `url.parse('http://foo?bar')` pathname is
-   ``, not `/`
+   `""` (empty string), not `"/"`
 2. Backslashes are not replaced with slashes, so `http:\\example.org\` is
    treated like a relative path
 3. Trailing colon is treated like a part of the path, i.e. in
