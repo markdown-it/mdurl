@@ -1,6 +1,7 @@
 {
   "name": "mdurl",
-  "version": "1.0.1",
+  "type": "module",
+  "version": "2.0.0",
   "description": "URL utilities for markdown-it",
   "repository": "markdown-it/mdurl",
   "license": "MIT",
@@ -8,9 +9,12 @@
     "test": "make test"
   },
   "devDependencies": {
-    "mocha": "*",
-    "eslint": "0.13.0",
-    "eslint-plugin-nodeca": "^1.0.0",
-    "istanbul": "*"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-recommended": "^4.1.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-nodeca": "^1.0.3",
+    "istanbul": "*",
+    "mocha": "*"
   }
 }

@@ -25,33 +25,33 @@
 
 // URLs to parse, and expected data
 // { url : parsed }
-module.exports = {
-  '//some_path' : {
+export default {
+  '//some_path': {
     'pathname': '//some_path'
   },
 
-  'HTTP://www.example.com/' : {
+  'HTTP://www.example.com/': {
     'protocol': 'HTTP:',
     'slashes': true,
     'hostname': 'www.example.com',
     'pathname': '/'
   },
 
-  'HTTP://www.example.com' : {
+  'HTTP://www.example.com': {
     'protocol': 'HTTP:',
     'slashes': true,
     'hostname': 'www.example.com',
     'pathname': ''
   },
 
-  'http://www.ExAmPlE.com/' : {
+  'http://www.ExAmPlE.com/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'www.ExAmPlE.com',
     'pathname': '/'
   },
 
-  'http://user:pw@www.ExAmPlE.com/' : {
+  'http://user:pw@www.ExAmPlE.com/': {
     'protocol': 'http:',
     'slashes': true,
     'auth': 'user:pw',
@@ -59,7 +59,7 @@ module.exports = {
     'pathname': '/'
   },
 
-  'http://USER:PW@www.ExAmPlE.com/' : {
+  'http://USER:PW@www.ExAmPlE.com/': {
     'protocol': 'http:',
     'slashes': true,
     'auth': 'USER:PW',
@@ -67,7 +67,7 @@ module.exports = {
     'pathname': '/'
   },
 
-  'http://user@www.example.com/' : {
+  'http://user@www.example.com/': {
     'protocol': 'http:',
     'slashes': true,
     'auth': 'user',
@@ -75,7 +75,7 @@ module.exports = {
     'pathname': '/'
   },
 
-  'http://user%3Apw@www.example.com/' : {
+  'http://user%3Apw@www.example.com/': {
     'protocol': 'http:',
     'slashes': true,
     'auth': 'user%3Apw',
@@ -83,7 +83,7 @@ module.exports = {
     'pathname': '/'
   },
 
-  'http://x.com/path?that\'s#all, folks' : {
+  'http://x.com/path?that\'s#all, folks': {
     'protocol': 'http:',
     'hostname': 'x.com',
     'slashes': true,
@@ -92,7 +92,7 @@ module.exports = {
     'hash': '#all, folks'
   },
 
-  'HTTP://X.COM/Y' : {
+  'HTTP://X.COM/Y': {
     'protocol': 'HTTP:',
     'slashes': true,
     'hostname': 'X.COM',
@@ -101,7 +101,7 @@ module.exports = {
 
   // + not an invalid host character
   // per https://url.spec.whatwg.org/#host-parsing
-  'http://x.y.com+a/b/c' : {
+  'http://x.y.com+a/b/c': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'x.y.com+a',
@@ -109,7 +109,7 @@ module.exports = {
   },
 
   // an unexpected invalid char in the hostname.
-  'HtTp://x.y.cOm;a/b/c?d=e#f g<h>i' : {
+  'HtTp://x.y.cOm;a/b/c?d=e#f g<h>i': {
     'protocol': 'HtTp:',
     'slashes': true,
     'hostname': 'x.y.cOm',
@@ -119,7 +119,7 @@ module.exports = {
   },
 
   // make sure that we don't accidentally lcast the path parts.
-  'HtTp://x.y.cOm;A/b/c?d=e#f g<h>i' : {
+  'HtTp://x.y.cOm;A/b/c?d=e#f g<h>i': {
     'protocol': 'HtTp:',
     'slashes': true,
     'hostname': 'x.y.cOm',
@@ -147,7 +147,7 @@ module.exports = {
     'pathname': '<http://goo.corn/bread> Is a URL!'
   },
 
-  'http://www.narwhaljs.org/blog/categories?id=news' : {
+  'http://www.narwhaljs.org/blog/categories?id=news': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'www.narwhaljs.org',
@@ -155,14 +155,14 @@ module.exports = {
     'pathname': '/blog/categories'
   },
 
-  'http://mt0.google.com/vt/lyrs=m@114&hl=en&src=api&x=2&y=2&z=3&s=' : {
+  'http://mt0.google.com/vt/lyrs=m@114&hl=en&src=api&x=2&y=2&z=3&s=': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'mt0.google.com',
     'pathname': '/vt/lyrs=m@114&hl=en&src=api&x=2&y=2&z=3&s='
   },
 
-  'http://mt0.google.com/vt/lyrs=m@114???&hl=en&src=api&x=2&y=2&z=3&s=' : {
+  'http://mt0.google.com/vt/lyrs=m@114???&hl=en&src=api&x=2&y=2&z=3&s=': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'mt0.google.com',
@@ -171,63 +171,63 @@ module.exports = {
   },
 
   'http://user:pass@mt0.google.com/vt/lyrs=m@114???&hl=en&src=api&x=2&y=2&z=3&s=':
-      {
-        'protocol': 'http:',
-        'slashes': true,
-        'auth': 'user:pass',
-        'hostname': 'mt0.google.com',
-        'search': '???&hl=en&src=api&x=2&y=2&z=3&s=',
-        'pathname': '/vt/lyrs=m@114'
-      },
+  {
+    'protocol': 'http:',
+    'slashes': true,
+    'auth': 'user:pass',
+    'hostname': 'mt0.google.com',
+    'search': '???&hl=en&src=api&x=2&y=2&z=3&s=',
+    'pathname': '/vt/lyrs=m@114'
+  },
 
-  'file:///etc/passwd' : {
+  'file:///etc/passwd': {
     'slashes': true,
     'protocol': 'file:',
     'pathname': '/etc/passwd',
     'hostname': ''
   },
 
-  'file://localhost/etc/passwd' : {
+  'file://localhost/etc/passwd': {
     'protocol': 'file:',
     'slashes': true,
     'pathname': '/etc/passwd',
     'hostname': 'localhost'
   },
 
-  'file://foo/etc/passwd' : {
+  'file://foo/etc/passwd': {
     'protocol': 'file:',
     'slashes': true,
     'pathname': '/etc/passwd',
     'hostname': 'foo'
   },
 
-  'file:///etc/node/' : {
+  'file:///etc/node/': {
     'slashes': true,
     'protocol': 'file:',
     'pathname': '/etc/node/',
     'hostname': ''
   },
 
-  'file://localhost/etc/node/' : {
+  'file://localhost/etc/node/': {
     'protocol': 'file:',
     'slashes': true,
     'pathname': '/etc/node/',
     'hostname': 'localhost'
   },
 
-  'file://foo/etc/node/' : {
+  'file://foo/etc/node/': {
     'protocol': 'file:',
     'slashes': true,
     'pathname': '/etc/node/',
     'hostname': 'foo'
   },
 
-  'http:/baz/../foo/bar' : {
+  'http:/baz/../foo/bar': {
     'protocol': 'http:',
     'pathname': '/baz/../foo/bar'
   },
 
-  'http://user:pass@example.com:8000/foo/bar?baz=quux#frag' : {
+  'http://user:pass@example.com:8000/foo/bar?baz=quux#frag': {
     'protocol': 'http:',
     'slashes': true,
     'auth': 'user:pass',
@@ -238,7 +238,7 @@ module.exports = {
     'pathname': '/foo/bar'
   },
 
-  '//user:pass@example.com:8000/foo/bar?baz=quux#frag' : {
+  '//user:pass@example.com:8000/foo/bar?baz=quux#frag': {
     'slashes': true,
     'auth': 'user:pass',
     'port': '8000',
@@ -248,46 +248,46 @@ module.exports = {
     'pathname': '/foo/bar'
   },
 
-  '/foo/bar?baz=quux#frag' : {
+  '/foo/bar?baz=quux#frag': {
     'hash': '#frag',
     'search': '?baz=quux',
     'pathname': '/foo/bar'
   },
 
-  'http:/foo/bar?baz=quux#frag' : {
+  'http:/foo/bar?baz=quux#frag': {
     'protocol': 'http:',
     'hash': '#frag',
     'search': '?baz=quux',
     'pathname': '/foo/bar'
   },
 
-  'mailto:foo@bar.com?subject=hello' : {
+  'mailto:foo@bar.com?subject=hello': {
     'protocol': 'mailto:',
-    'auth' : 'foo',
-    'hostname' : 'bar.com',
+    'auth': 'foo',
+    'hostname': 'bar.com',
     'search': '?subject=hello'
   },
 
-  'javascript:alert(\'hello\');' : {
+  'javascript:alert(\'hello\');': {
     'protocol': 'javascript:',
     'pathname': 'alert(\'hello\');'
   },
 
-  'xmpp:isaacschlueter@jabber.org' : {
+  'xmpp:isaacschlueter@jabber.org': {
     'protocol': 'xmpp:',
     'auth': 'isaacschlueter',
     'hostname': 'jabber.org'
   },
 
-  'http://atpass:foo%40bar@127.0.0.1:8080/path?search=foo#bar' : {
-    'protocol' : 'http:',
+  'http://atpass:foo%40bar@127.0.0.1:8080/path?search=foo#bar': {
+    'protocol': 'http:',
     'slashes': true,
-    'auth' : 'atpass:foo%40bar',
-    'hostname' : '127.0.0.1',
-    'port' : '8080',
+    'auth': 'atpass:foo%40bar',
+    'hostname': '127.0.0.1',
+    'port': '8080',
     'pathname': '/path',
-    'search' : '?search=foo',
-    'hash' : '#bar'
+    'search': '?search=foo',
+    'hash': '#bar'
   },
 
   'svn+ssh://foo/bar': {
@@ -324,28 +324,28 @@ module.exports = {
   },
 
   // IDNA tests
-  'http://www.日本語.com/' : {
+  'http://www.日本語.com/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'www.日本語.com',
     'pathname': '/'
   },
 
-  'http://example.Bücher.com/' : {
+  'http://example.Bücher.com/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.Bücher.com',
     'pathname': '/'
   },
 
-  'http://www.Äffchen.com/' : {
+  'http://www.Äffchen.com/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'www.Äffchen.com',
     'pathname': '/'
   },
 
-  'http://www.Äffchen.cOm;A/b/c?d=e#f g<h>i' : {
+  'http://www.Äffchen.cOm;A/b/c?d=e#f g<h>i': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'www.Äffchen.cOm',
@@ -354,21 +354,21 @@ module.exports = {
     'hash': '#f g<h>i'
   },
 
-  'http://SÉLIER.COM/' : {
+  'http://SÉLIER.COM/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'SÉLIER.COM',
     'pathname': '/'
   },
 
-  'http://ليهمابتكلموشعربي؟.ي؟/' : {
+  'http://ليهمابتكلموشعربي؟.ي؟/': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'ليهمابتكلموشعربي؟.ي؟',
     'pathname': '/'
   },
 
-  'http://➡.ws/➡' : {
+  'http://➡.ws/➡': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': '➡.ws',
@@ -398,7 +398,7 @@ module.exports = {
 
   // While this may seem counter-intuitive, a browser will parse
   // <a href='www.google.com'> as a path.
-  'www.example.com' : {
+  'www.example.com': {
     'pathname': 'www.example.com'
   },
 
@@ -569,7 +569,7 @@ module.exports = {
     search: '?@c'
   },
 
-  'http://a\r" \t\n<\'b:b@c\r\nd/e?f':{
+  'http://a\r" \t\n<\'b:b@c\r\nd/e?f': {
     protocol: 'http:',
     slashes: true,
     auth: 'a\r" \t\n<\'b:b',
@@ -587,7 +587,7 @@ module.exports = {
     pathname: ':npm/npm'
   },
 
-  'http://example.com?foo=bar#frag' : {
+  'http://example.com?foo=bar#frag': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.com',
@@ -596,7 +596,7 @@ module.exports = {
     'pathname': ''
   },
 
-  'http://example.com?foo=@bar#frag' : {
+  'http://example.com?foo=@bar#frag': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.com',
@@ -605,7 +605,7 @@ module.exports = {
     'pathname': ''
   },
 
-  'http://example.com?foo=/bar/#frag' : {
+  'http://example.com?foo=/bar/#frag': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.com',
@@ -614,7 +614,7 @@ module.exports = {
     'pathname': ''
   },
 
-  'http://example.com?foo=?bar/#frag' : {
+  'http://example.com?foo=?bar/#frag': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.com',
@@ -623,7 +623,7 @@ module.exports = {
     'pathname': ''
   },
 
-  'http://example.com#frag=?bar/#frag' : {
+  'http://example.com#frag=?bar/#frag': {
     'protocol': 'http:',
     'slashes': true,
     'hostname': 'example.com',
@@ -631,14 +631,14 @@ module.exports = {
     'pathname': ''
   },
 
-  'http://google.com" onload="alert(42)/' : {
+  'http://google.com" onload="alert(42)/': {
     'hostname': 'google.com',
     'protocol': 'http:',
     'slashes': true,
     'pathname': '" onload="alert(42)/'
   },
 
-  'http://a.com/a/b/c?s#h' : {
+  'http://a.com/a/b/c?s#h': {
     'protocol': 'http:',
     'slashes': true,
     'pathname': '/a/b/c',
@@ -647,7 +647,7 @@ module.exports = {
     'search': '?s'
   },
 
-  'http://atpass:foo%40bar@127.0.0.1/' : {
+  'http://atpass:foo%40bar@127.0.0.1/': {
     'auth': 'atpass:foo%40bar',
     'slashes': true,
     'hostname': '127.0.0.1',
@@ -655,7 +655,7 @@ module.exports = {
     'pathname': '/'
   },
 
-  'http://atslash%2F%40:%2F%40@foo/' : {
+  'http://atslash%2F%40:%2F%40@foo/': {
     'auth': 'atslash%2F%40:%2F%40',
     'hostname': 'foo',
     'protocol': 'http:',

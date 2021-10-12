@@ -2,8 +2,8 @@
 'use strict';
 
 
-module.exports = function format(url) {
-  var result = '';
+export default function format(url) {
+  let result = '';
 
   result += url.protocol || '';
   result += url.slashes ? '//' : '';
@@ -22,4 +22,4 @@ module.exports = function format(url) {
   result += url.hash || '';
 
   return result;
-};
+}

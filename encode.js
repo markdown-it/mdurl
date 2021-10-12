@@ -2,14 +2,14 @@
 'use strict';
 
 
-var encodeCache = {};
+const encodeCache = {};
 
 
 // Create a lookup array where anything but characters in `chars` string
 // and alphanumeric chars is percent-encoded.
 //
 function getEncodeCache(exclude) {
-  var i, ch, cache = encodeCache[exclude];
+  let i, ch, cache = encodeCache[exclude];
   if (cache) { return cache; }
 
   cache = encodeCache[exclude] = [];
@@ -41,7 +41,7 @@ function getEncodeCache(exclude) {
 //  - keepEscaped  - don't encode '%' in a correct escape sequence (default: true)
 //
 function encode(string, exclude, keepEscaped) {
-  var i, l, code, nextCode, cache,
+  let i, l, code, nextCode,
       result = '';
 
   if (typeof exclude !== 'string') {
@@ -54,7 +54,7 @@ function encode(string, exclude, keepEscaped) {
     keepEscaped = true;
   }
 
-  cache = getEncodeCache(exclude);
+  const cache = getEncodeCache(exclude);
 
   for (i = 0, l = string.length; i < l; i++) {
     code = string.charCodeAt(i);
@@ -95,4 +95,4 @@ encode.defaultChars   = ";/?:@&=+$,-_.!~*'()#";
 encode.componentChars = "-_.!~*'()";
 
 
-module.exports = encode;
+export default encode;

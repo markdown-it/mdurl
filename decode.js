@@ -1,13 +1,12 @@
-
 'use strict';
 
 
 /* eslint-disable no-bitwise */
 
-var decodeCache = {};
+const decodeCache = {};
 
 function getDecodeCache(exclude) {
-  var i, ch, cache = decodeCache[exclude];
+  let i, ch, cache = decodeCache[exclude];
   if (cache) { return cache; }
 
   cache = decodeCache[exclude] = [];
@@ -29,17 +28,15 @@ function getDecodeCache(exclude) {
 // Decode percent-encoded string.
 //
 function decode(string, exclude) {
-  var cache;
-
   if (typeof exclude !== 'string') {
     exclude = decode.defaultChars;
   }
 
-  cache = getDecodeCache(exclude);
+  const cache = getDecodeCache(exclude);
 
-  return string.replace(/(%[a-f0-9]{2})+/gi, function(seq) {
-    var i, l, b1, b2, b3, b4, chr,
-        result = '';
+  return string.replace(/(%[a-f0-9]{2})+/gi, function (seq) {
+    let i, l, b1, b2, b3, b4, chr,
+      result = '';
 
     for (i = 0, l = seq.length; i < l; i += 3) {
       b1 = parseInt(seq.slice(i + 1, i + 3), 16);
@@ -115,8 +112,8 @@ function decode(string, exclude) {
 }
 
 
-decode.defaultChars   = ';/?:@&=+$,#';
+decode.defaultChars = ';/?:@&=+$,#';
 decode.componentChars = '';
 
 
-module.exports = decode;
+export default decode;

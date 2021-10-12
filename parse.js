@@ -19,8 +19,6 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
-
 //
 // Changes from joyent/node:
 //
@@ -58,63 +56,63 @@ function Url() {
 
 // define these here so at least they only have to be
 // compiled once on the first module load.
-var protocolPattern = /^([a-z0-9.+-]+:)/i,
-    portPattern = /:[0-9]*$/,
+const protocolPattern = /^([a-z0-9.+-]+:)/i,
+  portPattern = /:[0-9]*$/,
 
-    // Special case for a simple path URL
-    simplePathPattern = /^(\/\/?(?!\/)[^\?\s]*)(\?[^\s]*)?$/,
+  // Special case for a simple path URL
+  simplePathPattern = /^(\/\/?(?!\/)[^?\s]*)(\?[^\s]*)?$/,
 
-    // RFC 2396: characters reserved for delimiting URLs.
-    // We actually just auto-escape these.
-    delims = [ '<', '>', '"', '`', ' ', '\r', '\n', '\t' ],
+  // RFC 2396: characters reserved for delimiting URLs.
+  // We actually just auto-escape these.
+  delims = ['<', '>', '"', '`', ' ', '\r', '\n', '\t'],
 
-    // RFC 2396: characters not allowed for various reasons.
-    unwise = [ '{', '}', '|', '\\', '^', '`' ].concat(delims),
+  // RFC 2396: characters not allowed for various reasons.
+  unwise = ['{', '}', '|', '\\', '^', '`'].concat(delims),
 
-    // Allowed by RFCs, but cause of XSS attacks.  Always escape these.
-    autoEscape = [ '\'' ].concat(unwise),
-    // Characters that are never ever allowed in a hostname.
-    // Note that any invalid chars are also handled, but these
-    // are the ones that are *expected* to be seen, so we fast-path
-    // them.
-    nonHostChars = [ '%', '/', '?', ';', '#' ].concat(autoEscape),
-    hostEndingChars = [ '/', '?', '#' ],
-    hostnameMaxLen = 255,
-    hostnamePartPattern = /^[+a-z0-9A-Z_-]{0,63}$/,
-    hostnamePartStart = /^([+a-z0-9A-Z_-]{0,63})(.*)$/,
-    // protocols that can allow "unsafe" and "unwise" chars.
-    /* eslint-disable no-script-url */
-    // protocols that never have a hostname.
-    hostlessProtocol = {
-      'javascript': true,
-      'javascript:': true
-    },
-    // protocols that always contain a // bit.
-    slashedProtocol = {
-      'http': true,
-      'https': true,
-      'ftp': true,
-      'gopher': true,
-      'file': true,
-      'http:': true,
-      'https:': true,
-      'ftp:': true,
-      'gopher:': true,
-      'file:': true
-    };
-    /* eslint-enable no-script-url */
+  // Allowed by RFCs, but cause of XSS attacks.  Always escape these.
+  autoEscape = ['\''].concat(unwise),
+  // Characters that are never ever allowed in a hostname.
+  // Note that any invalid chars are also handled, but these
+  // are the ones that are *expected* to be seen, so we fast-path
+  // them.
+  nonHostChars = ['%', '/', '?', ';', '#'].concat(autoEscape),
+  hostEndingChars = ['/', '?', '#'],
+  hostnameMaxLen = 255,
+  hostnamePartPattern = /^[+a-z0-9A-Z_-]{0,63}$/,
+  hostnamePartStart = /^([+a-z0-9A-Z_-]{0,63})(.*)$/,
+  // protocols that can allow "unsafe" and "unwise" chars.
+  /* eslint-disable no-script-url */
+  // protocols that never have a hostname.
+  hostlessProtocol = {
+    'javascript': true,
+    'javascript:': true
+  },
+  // protocols that always contain a // bit.
+  slashedProtocol = {
+    'http': true,
+    'https': true,
+    'ftp': true,
+    'gopher': true,
+    'file': true,
+    'http:': true,
+    'https:': true,
+    'ftp:': true,
+    'gopher:': true,
+    'file:': true
+  };
+/* eslint-enable no-script-url */
 
 function urlParse(url, slashesDenoteHost) {
   if (url && url instanceof Url) { return url; }
 
-  var u = new Url();
+  const u = new Url();
   u.parse(url, slashesDenoteHost);
   return u;
 }
 
-Url.prototype.parse = function(url, slashesDenoteHost) {
-  var i, l, lowerProto, hec, slashes,
-      rest = url;
+Url.prototype.parse = function (url, slashesDenoteHost) {
+  let i, l, lowerProto, hec, slashes,
+    rest = url;
 
   // trim before proceeding.
   // This is to support parse stuff like "  http://foo.com  \n"
@@ -122,7 +120,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
 
   if (!slashesDenoteHost && url.split('#').length === 1) {
     // Try fast path regexp
-    var simplePath = simplePathPattern.exec(rest);
+    const simplePath = simplePathPattern.exec(rest);
     if (simplePath) {
       this.pathname = simplePath[1];
       if (simplePath[2]) {
@@ -132,7 +130,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
     }
   }
 
-  var proto = protocolPattern.exec(rest);
+  let proto = protocolPattern.exec(rest);
   if (proto) {
     proto = proto[0];
     lowerProto = proto.toLowerCase();
@@ -144,7 +142,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
   // user@server is *always* interpreted as a hostname, and url
   // resolution will treat //foo/bar as host=foo,path=bar because that's
   // how the browser resolves relative URLs.
-  if (slashesDenoteHost || proto || rest.match(/^\/\/[^@\/]+@[^@\/]+/)) {
+  if (slashesDenoteHost || proto || rest.match(/^\/\/[^@/]+@[^@/]+/)) {
     slashes = rest.substr(0, 2) === '//';
     if (slashes && !(proto && hostlessProtocol[proto])) {
       rest = rest.substr(2);
@@ -153,7 +151,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
   }
 
   if (!hostlessProtocol[proto] &&
-      (slashes || (proto && !slashedProtocol[proto]))) {
+    (slashes || (proto && !slashedProtocol[proto]))) {
 
     // there's a hostname.
     // the first instance of /, ?, ;, or # ends the host.
@@ -171,7 +169,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
     // Review our test case against browsers more comprehensively.
 
     // find the first instance of any hostEndingChars
-    var hostEnd = -1;
+    let hostEnd = -1;
     for (i = 0; i < hostEndingChars.length; i++) {
       hec = rest.indexOf(hostEndingChars[i]);
       if (hec !== -1 && (hostEnd === -1 || hec < hostEnd)) {
@@ -181,7 +179,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
 
     // at this point, either we have an explicit point where the
     // auth portion cannot go past, or the last @ char is the decider.
-    var auth, atSign;
+    let auth, atSign;
     if (hostEnd === -1) {
       // atSign can be anywhere.
       atSign = rest.lastIndexOf('@');
@@ -213,7 +211,7 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
     }
 
     if (rest[hostEnd - 1] === ':') { hostEnd--; }
-    var host = rest.slice(0, hostEnd);
+    const host = rest.slice(0, hostEnd);
     rest = rest.slice(hostEnd);
 
     // pull out port.
@@ -225,18 +223,18 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
 
     // if hostname begins with [ and ends with ]
     // assume that it's an IPv6 address.
-    var ipv6Hostname = this.hostname[0] === '[' &&
-        this.hostname[this.hostname.length - 1] === ']';
+    const ipv6Hostname = this.hostname[0] === '[' &&
+      this.hostname[this.hostname.length - 1] === ']';
 
     // validate a little.
     if (!ipv6Hostname) {
-      var hostparts = this.hostname.split(/\./);
+      const hostparts = this.hostname.split(/\./);
       for (i = 0, l = hostparts.length; i < l; i++) {
-        var part = hostparts[i];
+        const part = hostparts[i];
         if (!part) { continue; }
         if (!part.match(hostnamePartPattern)) {
-          var newpart = '';
-          for (var j = 0, k = part.length; j < k; j++) {
+          let newpart = '';
+          for (let j = 0, k = part.length; j < k; j++) {
             if (part.charCodeAt(j) > 127) {
               // we replace non-ASCII char with a temporary placeholder
               // we need this to make sure size of hostname is not
@@ -248,9 +246,9 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
           }
           // we test again with ASCII char only
           if (!newpart.match(hostnamePartPattern)) {
-            var validParts = hostparts.slice(0, i);
-            var notHost = hostparts.slice(i + 1);
-            var bit = part.match(hostnamePartStart);
+            const validParts = hostparts.slice(0, i);
+            const notHost = hostparts.slice(i + 1);
+            const bit = part.match(hostnamePartStart);
             if (bit) {
               validParts.push(bit[1]);
               notHost.unshift(bit[2]);
@@ -277,28 +275,28 @@ Url.prototype.parse = function(url, slashesDenoteHost) {
   }
 
   // chop off from the tail first.
-  var hash = rest.indexOf('#');
+  const hash = rest.indexOf('#');
   if (hash !== -1) {
     // got a fragment string.
     this.hash = rest.substr(hash);
     rest = rest.slice(0, hash);
   }
-  var qm = rest.indexOf('?');
+  const qm = rest.indexOf('?');
   if (qm !== -1) {
     this.search = rest.substr(qm);
     rest = rest.slice(0, qm);
   }
   if (rest) { this.pathname = rest; }
   if (slashedProtocol[lowerProto] &&
-      this.hostname && !this.pathname) {
+    this.hostname && !this.pathname) {
     this.pathname = '';
   }
 
   return this;
 };
 
-Url.prototype.parseHost = function(host) {
-  var port = portPattern.exec(host);
+Url.prototype.parseHost = function (host) {
+  let port = portPattern.exec(host);
   if (port) {
     port = port[0];
     if (port !== ':') {
@@ -309,4 +307,4 @@ Url.prototype.parseHost = function(host) {
   if (host) { this.hostname = host; }
 };
 
-module.exports = urlParse;
+export default urlParse;
