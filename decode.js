@@ -87,7 +87,7 @@ function decode(string, exclude) {
       }
 
       if ((b1 & 0xF8) === 0xF0 && (i + 9 < l)) {
-        // 111110xx 10xxxxxx 10xxxxxx 10xxxxxx
+        // 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
         b2 = parseInt(seq.slice(i + 4, i + 6), 16);
         b3 = parseInt(seq.slice(i + 7, i + 9), 16);
         b4 = parseInt(seq.slice(i + 10, i + 12), 16);
