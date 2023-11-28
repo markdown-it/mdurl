@@ -1,30 +1,26 @@
+import assert from 'node:assert'
+import { decode } from '../index.mjs'
 
-'use strict';
+function encodeBinary (str) {
+  let result = ''
 
-
-var assert = require('assert');
-var decode = require('../decode');
-
-function encodeBinary(str) {
-  var result = '';
-
-  str = str.replace(/\s+/g, '');
+  str = str.replace(/\s+/g, '')
   while (str.length) {
-    result = '%' + ('0' + parseInt(str.slice(-8), 2).toString(16)).slice(-2) + result;
-    str = str.slice(0, -8);
+    result = '%' + ('0' + parseInt(str.slice(-8), 2).toString(16)).slice(-2) + result
+    str = str.slice(0, -8)
   }
 
-  return result;
+  return result
 }
 
-var samples = {
+const samples = {
   '00000000': true,
   '01010101': true,
   '01111111': true,
 
   // invalid as 1st byte
-  '10000000': true,
-  '10111111': true,
+  10000000: true,
+  10111111: true,
 
   // invalid sequences, 2nd byte should be >= 0x80
   '11000111 01010101': false,
@@ -79,45 +75,45 @@ var samples = {
   '11101101 10100000 10000000': false,
   '11101101 10111111 10111111': false,
   '11101110 10000000 10000000': true
-};
+}
 
-describe('decode', function() {
-  it('should decode %xx', function() {
-    assert.equal(decode('x%20xx%20%2520'), 'x xx %20');
-  });
+describe('decode', () => {
+  it('should decode %xx', () => {
+    assert.equal(decode('x%20xx%20%2520'), 'x xx %20')
+  })
 
-  it('should not decode invalid sequences', function() {
-    assert.equal(decode('%2g%z1%%'), '%2g%z1%%');
-  });
+  it('should not decode invalid sequences', () => {
+    assert.equal(decode('%2g%z1%%'), '%2g%z1%%')
+  })
 
-  it('should not decode reservedSet', function() {
-    assert.equal(decode('%20%25%20', '%'),  ' %25 ');
-    assert.equal(decode('%20%25%20', ' '),  '%20%%20');
-    assert.equal(decode('%20%25%20', ' %'), '%20%25%20');
-  });
+  it('should not decode reservedSet', () => {
+    assert.equal(decode('%20%25%20', '%'), ' %25 ')
+    assert.equal(decode('%20%25%20', ' '), '%20%%20')
+    assert.equal(decode('%20%25%20', ' %'), '%20%25%20')
+  })
 
-  describe('utf8', function() {
-    Object.keys(samples).forEach(function(k) {
-      it(k, function() {
-        var res1, res2,
-            er = null,
-            str = encodeBinary(k);
+  describe('utf8', () => {
+    Object.keys(samples).forEach(function (k) {
+      it(k, () => {
+        let res1, er
+
+        const str = encodeBinary(k)
 
         try {
-          res1 = decodeURIComponent(str);
-        } catch(e) {
-          er = e;
+          res1 = decodeURIComponent(str)
+        } catch (e) {
+          er = e
         }
 
-        res2 = decode(str);
+        const res2 = decode(str)
 
         if (er) {
-          assert.notEqual(res2.indexOf('\ufffd'), -1);
+          assert.notEqual(res2.indexOf('\ufffd'), -1)
         } else {
-          assert.equal(res1, res2);
-          assert.equal(res2.indexOf('\ufffd'), -1);
+          assert.equal(res1, res2)
+          assert.equal(res2.indexOf('\ufffd'), -1)
         }
-      });
-    });
-  });
-});
+      })
+    })
+  })
+})

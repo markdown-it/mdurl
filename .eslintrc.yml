@@ -1,0 +1,12 @@
+extends: standard
+
+#parserOptions:
+#  sourceType: module
+
+overrides:
+  -
+    files: [ 'index.mjs', 'lib/**/*.mjs' ]
+  -
+    files: [ 'test/**/*.mjs' ]
+    env:
+      mocha: true
