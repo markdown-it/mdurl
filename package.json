@@ -2,7 +2,10 @@
   "name": "mdurl",
   "version": "2.0.0",
   "description": "URL utilities for markdown-it",
-  "repository": "markdown-it/mdurl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markdown-it/mdurl.git"
+  },
   "license": "MIT",
   "main": "build/index.cjs.js",
   "module": "index.mjs",
