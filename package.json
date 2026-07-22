@@ -31,9 +31,9 @@
     "build/"
   ],
   "devDependencies": {
-    "c8": "^8.0.1",
+    "c8": "^12.0.0",
     "eslint": "^8.54.0",
     "eslint-config-standard": "^17.1.0",
-    "rollup": "^4.6.1"
+    "rollup": "^4.62.2"
   }
 }
