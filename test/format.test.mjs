@@ -1,5 +1,6 @@
 import assert from 'node:assert'
-import { parse, format } from '../index.mjs'
+import { describe, it } from 'node:test'
+import { parse, format } from 'mdurl'
 import fixtures from './fixtures/url.mjs'
 
 describe('format', () => {

@@ -1,5 +1,6 @@
 import { strictEqual as equals } from 'node:assert'
-import { encode } from '../index.mjs'
+import { describe, it } from 'node:test'
+import { encode } from 'mdurl'
 
 describe('encode', () => {
   it('should encode percent', () => {

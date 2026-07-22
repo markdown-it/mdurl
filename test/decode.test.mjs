@@ -1,5 +1,6 @@
 import assert from 'node:assert'
-import { decode } from '../index.mjs'
+import { describe, it } from 'node:test'
+import { decode } from 'mdurl'
 
 function encodeBinary (str) {
   let result = ''

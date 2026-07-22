@@ -19,7 +19,7 @@
   "scripts": {
     "lint": "eslint .",
     "build": "rollup -c",
-    "test": "npm run lint && npm run build && c8 --exclude build --exclude test -r text -r html -r lcov mocha",
+    "test": "npm run lint && npm run build && c8 --exclude build --exclude test -r text -r html -r lcov node --test test/**/*.test.*",
     "prepublishOnly": "npm run lint && npm run build"
   },
   "files": [
@@ -31,7 +31,6 @@
     "c8": "^8.0.1",
     "eslint": "^8.54.0",
     "eslint-config-standard": "^17.1.0",
-    "mocha": "^10.2.0",
     "rollup": "^4.6.1"
   }
 }
